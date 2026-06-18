@@ -1,10 +1,5 @@
 <template>
-  <el-menu
-    default-active="route.path"
-    class="el-menu-vertical-demo"
-    @open="handleOpen"
-    @close="handleClose"
-  >
+  <el-menu :default-active="route.path" router class="el-menu-vertical-demo">
     <template v-for="menu in menus" :key="menu.path">
       <el-sub-menu v-if="menu.children?.length" :index="menu.path">
         <template #title>
@@ -23,21 +18,18 @@
   </el-menu>
 </template>
 <script setup lang="ts">
-import { useRouter, useRoute } from "vue-router";
+import { useRoute } from "vue-router";
 import { routes } from "@/router";
 import type { AppRouteRecordRaw } from "@/router/type";
 import { getMenus } from "@/utils/menu";
-const router = useRouter();
 const route = useRoute();
-console.log(router, route);
 
-const menus = getMenus(routes as AppRouteRecordRaw[]);
-
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
+const menus = getMenus((routes[0]?.children ?? []) as AppRouteRecordRaw[]);
 </script>
-<style scoped></style>
+<style scoped>
+.el-menu {
+  height: 100%;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+</style>

@@ -8,14 +8,17 @@ export const routes = [
   {
     path: "/",
     component: Layout,
-    meta: {
-      title: "首页",
-    },
-  },
-  {
-    path: "/",
-    component: Layout,
-    children: [vastRoutes],
+    children: [
+      {
+        path: "",
+        name: "home",
+        component: () => import("@/views/homePage/index.vue"),
+        meta: {
+          title: "首页",
+        },
+      },
+      vastRoutes,
+    ],
   },
 ];
 

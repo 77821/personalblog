@@ -7,13 +7,27 @@ export interface MenuItem {
   children?: MenuItem[];
 }
 
-export function getMenus(routes: AppRouteRecordRaw[]): MenuItem[] {
+function resolveMenuPath(basePath: string, path: string): string {
+  if (path.startsWith("/")) return path;
+  if (!path) return basePath || "/";
+  return `${basePath}/${path}`.replace(/\/+/g, "/");
+}
+
+export function getMenus(
+  routes: AppRouteRecordRaw[],
+  basePath = "",
+): MenuItem[] {
   return routes
     .filter((route) => !route.meta?.hidden)
-    .map((route) => ({
-      title: route.meta.title,
-      icon: route.meta?.icon,
-      path: route.path,
-      children: route.children ? getMenus(route.children) : [],
-    }));
+    .map((route) => {
+      const fullPath = resolveMenuPath(basePath, route.path);
+      return {
+        title: route.meta.title,
+        icon: route.meta?.icon,
+        path: fullPath,
+        children: route.children?.length
+          ? getMenus(route.children, fullPath)
+          : [],
+      };
+    });
 }

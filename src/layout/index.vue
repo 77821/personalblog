@@ -24,4 +24,11 @@ import Sidebar from "@/components/sidebar.vue";
   flex-direction: row;
   height: 100%;
 }
+.layout-content-left {
+  width: 240px;
+}
+.layout-content-right {
+  flex: 1;
+  overflow-y: auto;
+}
 </style>
